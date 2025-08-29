@@ -1,4 +1,4 @@
-import { ActivityLogger, DatabaseStorage, FileStorage } from '@logique/activity-log';
+import { ActivityLogger, DatabaseStorage, FileStorage } from '../src';
 
 async function basicUsage() {
   // Setup dengan MySQL

@@ -1,4 +1,4 @@
-import { ActivityLogger, DatabaseStorage } from '@logique/activity-log';
+import { ActivityLogger, DatabaseStorage } from '../src';
 
 async function batchLoggingExample() {
   const logger = new ActivityLogger({

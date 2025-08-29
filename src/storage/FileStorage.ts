@@ -26,6 +26,9 @@ export class FileStorage implements StorageInterface {
       },
       ...config
     };
+    
+    // Initialize current file path
+    this.currentFile = this.getCurrentFilePath();
   }
 
   async initialize(): Promise<void> {
@@ -54,7 +57,9 @@ export class FileStorage implements StorageInterface {
 
   private getCurrentFilePath(): string {
     const now = new Date();
-    const filename = this.config.filename || 'activity-{YYYY}-{MM}-{DD}.log'
+    let filename = this.config.filename || 'activity-{YYYY}-{MM}-{DD}.log';
+    
+    filename = filename
       .replace('{YYYY}', now.getFullYear().toString())
       .replace('{MM}', (now.getMonth() + 1).toString().padStart(2, '0'))
       .replace('{DD}', now.getDate().toString().padStart(2, '0'))

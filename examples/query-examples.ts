@@ -1,4 +1,4 @@
-import { ActivityLogger, DatabaseStorage, ActivityLogQuery, ActivityLogFormatter } from '@logique/activity-log';
+import { ActivityLogger, DatabaseStorage, ActivityLogQuery, ActivityLogFormatter } from '../src';
 
 async function queryExamples() {
   const logger = new ActivityLogger({
