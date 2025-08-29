@@ -4,7 +4,7 @@ import { ActivityLogSubject } from './interfaces/ActivityLogSubject';
 import { ActivityLogCauser } from './interfaces/ActivityLogCauser';
 import { ActivityLogProperties } from './interfaces/ActivityLogProperties';
 import { ActivityLogEventType } from './constants/ActivityLogEventType';
-import { ActivityLogLevel } from './constants/ActivityLogLevel';
+
 import { v4 as uuidv4 } from 'uuid';
 
 export class ActivityLog {
@@ -39,7 +39,7 @@ export class ActivityLog {
   startBatch(): string {
     this.batchId = uuidv4();
     this.batchEntries = [];
-    return this.batchId;
+    return this.batchId!;
   }
 
   /**
@@ -48,7 +48,7 @@ export class ActivityLog {
   async endBatch(): Promise<void> {
     if (this.batchId && this.batchEntries.length > 0) {
       await this.config.storage.storeBatch(this.batchEntries);
-      this.batchId = undefined;
+      this.batchId = undefined as string | undefined;
       this.batchEntries = [];
     }
   }
@@ -68,8 +68,8 @@ export class ActivityLog {
     const entry: ActivityLogEntry = {
       id: uuidv4(),
       name: options.name,
-      description: options.description,
-      level: options.level || this.config.defaultLevel!,
+      description: options.description || undefined,
+      level: options.level || this.config.defaultLevel || 'info',
       event: options.event || ActivityLogEventType.CUSTOM,
       subject: options.subject,
       causer: options.causer,
@@ -82,7 +82,7 @@ export class ActivityLog {
     if (this.config.enableBatchLogging && this.batchId) {
       this.batchEntries.push(entry);
       
-      if (this.batchEntries.length >= this.config.batchSize!) {
+      if (this.batchEntries.length >= (this.config.batchSize || 100)) {
         await this.endBatch();
       }
     } else {
@@ -156,7 +156,7 @@ export class ActivityLog {
       event: ActivityLogEventType.LOGGED_IN,
       level: 'info',
       causer: options.causer,
-      properties: options.properties
+      properties: options.properties || undefined
     });
   }
 
@@ -173,7 +173,7 @@ export class ActivityLog {
       event: ActivityLogEventType.LOGGED_OUT,
       level: 'info',
       causer: options.causer,
-      properties: options.properties
+      properties: options.properties || undefined
     });
   }
 
@@ -190,7 +190,7 @@ export class ActivityLog {
       event: ActivityLogEventType.PASSWORD_CHANGED,
       level: 'info',
       causer: options.causer,
-      properties: options.properties
+      properties: options.properties || undefined
     });
   }
 
@@ -208,8 +208,8 @@ export class ActivityLog {
       event: ActivityLogEventType.FILE_UPLOADED,
       level: 'info',
       subject: options.subject,
-      causer: options.causer,
-      properties: options.properties
+      causer: options.causer || undefined,
+      properties: options.properties || undefined
     });
   }
 
@@ -227,8 +227,8 @@ export class ActivityLog {
       event: ActivityLogEventType.FILE_DELETED,
       level: 'warning',
       subject: options.subject,
-      causer: options.causer,
-      properties: options.properties
+      causer: options.causer || undefined,
+      properties: options.properties || undefined
     });
   }
 
@@ -341,7 +341,9 @@ export class ActivityLog {
 
     for (let i = 0; i < Math.min(keys.length, maxKeys); i++) {
       const key = keys[i];
-      limited[key] = properties[key];
+      if (key !== undefined) {
+        limited[key] = properties[key];
+      }
     }
 
     return limited;

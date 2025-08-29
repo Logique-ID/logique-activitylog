@@ -77,8 +77,8 @@ describe('ActivityLog', () => {
     });
 
     expect(entry.event).toBe('updated');
-    expect(entry.subject?.changes?.before?.name).toBe('John Doe');
-    expect(entry.subject?.changes?.after?.name).toBe('John Smith');
+    expect(entry.subject?.changes?.before?.['name']).toBe('John Doe');
+    expect(entry.subject?.changes?.after?.['name']).toBe('John Smith');
   });
 
   it('should log a deleted event', async () => {
@@ -134,8 +134,8 @@ describe('ActivityLog', () => {
     });
 
     expect(activities).toHaveLength(2);
-    expect(activities[0].subject?.type).toBe('user');
-    expect(activities[0].subject?.id).toBe(123);
+    expect(activities[0]?.subject?.type).toBe('user');
+    expect(activities[0]?.subject?.id).toBe(123);
   });
 
   it('should count activities', async () => {

@@ -16,7 +16,7 @@ export interface ActivityLogEntry {
   /**
    * Log entry description
    */
-  description?: string;
+  description?: string | undefined;
   
   /**
    * Log level
@@ -31,22 +31,22 @@ export interface ActivityLogEntry {
   /**
    * Subject being logged (the model/entity)
    */
-  subject?: ActivityLogSubject;
+  subject?: ActivityLogSubject | undefined;
   
   /**
    * Causer of the action (user/system)
    */
-  causer?: ActivityLogCauser;
+  causer?: ActivityLogCauser | undefined;
   
   /**
    * Additional properties
    */
-  properties?: ActivityLogProperties;
+  properties?: ActivityLogProperties | undefined;
   
   /**
    * Batch ID for batch logging
    */
-  batchId?: string;
+  batchId?: string | undefined;
   
   /**
    * Timestamp when the log was created

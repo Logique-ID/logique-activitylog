@@ -3,25 +3,27 @@ import { ActivityLogEntry } from '../interfaces/ActivityLogEntry';
 import { FileStorageConfig } from './FileStorageConfig';
 import * as fs from 'fs/promises';
 import * as path from 'path';
-import { v4 as uuidv4 } from 'uuid';
+
 
 export class FileStorage implements StorageInterface {
   private config: FileStorageConfig;
-  private currentFile: string;
+  private currentFile!: string;
   private currentFileSize: number = 0;
   private buffer: ActivityLogEntry[] = [];
   private bufferSize: number = 0;
 
   constructor(config: FileStorageConfig) {
     this.config = {
-      type: 'json',
-      directory: './logs',
-      filename: 'activity-{YYYY}-{MM}-{DD}.log',
-      maxFileSize: 10 * 1024 * 1024, // 10MB default
-      maxFiles: 30,
-      compress: false,
-      encoding: 'utf8',
-      append: true,
+      ...{
+        type: 'json',
+        directory: './logs',
+        filename: 'activity-{YYYY}-{MM}-{DD}.log',
+        maxFileSize: 10 * 1024 * 1024, // 10MB default
+        maxFiles: 30,
+        compress: false,
+        encoding: 'utf8',
+        append: true,
+      },
       ...config
     };
   }
@@ -52,7 +54,7 @@ export class FileStorage implements StorageInterface {
 
   private getCurrentFilePath(): string {
     const now = new Date();
-    const filename = this.config.filename!
+    const filename = this.config.filename || 'activity-{YYYY}-{MM}-{DD}.log'
       .replace('{YYYY}', now.getFullYear().toString())
       .replace('{MM}', (now.getMonth() + 1).toString().padStart(2, '0'))
       .replace('{DD}', now.getDate().toString().padStart(2, '0'))
@@ -64,7 +66,7 @@ export class FileStorage implements StorageInterface {
   }
 
   private async rotateFile(): Promise<void> {
-    if (this.currentFileSize >= this.config.maxFileSize!) {
+    if (this.currentFileSize >= (this.config.maxFileSize || 10 * 1024 * 1024)) {
       const newFile = this.getCurrentFilePath();
       if (newFile !== this.currentFile) {
         this.currentFile = newFile;
@@ -86,11 +88,11 @@ export class FileStorage implements StorageInterface {
   }
 
   async store(entry: ActivityLogEntry): Promise<void> {
-    if (this.config.enableBatchLogging) {
+    if ((this.config as any).enableBatchLogging) {
       this.buffer.push(entry);
       this.bufferSize += JSON.stringify(entry).length;
       
-      if (this.buffer.length >= (this.config.batchSize || 100)) {
+      if (this.buffer.length >= ((this.config as any).batchSize || 100)) {
         await this.flushBuffer();
       }
     } else {
@@ -225,7 +227,11 @@ export class FileStorage implements StorageInterface {
     });
     
     // Sort by creation date (newest first)
-    allEntries.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+    allEntries.sort((a, b) => {
+      const aTime = a.createdAt instanceof Date ? a.createdAt.getTime() : new Date(a.createdAt).getTime();
+      const bTime = b.createdAt instanceof Date ? b.createdAt.getTime() : new Date(b.createdAt).getTime();
+      return bTime - aTime;
+    });
     
     // Apply pagination
     if (filters?.offset) {
@@ -253,7 +259,7 @@ export class FileStorage implements StorageInterface {
     return entries.length;
   }
 
-  async delete(filters?: {
+  async delete(_filters?: {
     subjectType?: string;
     subjectId?: string | number;
     causerType?: string;
@@ -297,11 +303,12 @@ export class FileStorage implements StorageInterface {
       totalEntries += entries.length;
       
       for (const entry of entries) {
-        if (!oldestEntry || entry.createdAt < oldestEntry) {
-          oldestEntry = entry.createdAt;
+        const entryDate = entry.createdAt instanceof Date ? entry.createdAt : new Date(entry.createdAt);
+        if (!oldestEntry || entryDate < oldestEntry) {
+          oldestEntry = entryDate;
         }
-        if (!newestEntry || entry.createdAt > newestEntry) {
-          newestEntry = entry.createdAt;
+        if (!newestEntry || entryDate > newestEntry) {
+          newestEntry = entryDate;
         }
       }
     }

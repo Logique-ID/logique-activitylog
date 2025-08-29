@@ -305,7 +305,8 @@ export class RedisAdapter implements StorageInterface {
     return {
       totalEntries,
       oldestEntry: oldestResult.length > 0 ? new Date(parseInt(oldestResult[1])) : undefined,
-      newestEntry: newestResult.length > 0 ? new Date(parseInt(newestResult[1])) : undefined
+      newestEntry: newestResult.length > 0 ? new Date(parseInt(newestResult[1])) : undefined,
+      sizeInBytes: undefined
     };
   }
 

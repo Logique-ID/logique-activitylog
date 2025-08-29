@@ -305,7 +305,8 @@ export class MongoDBAdapter implements StorageInterface {
     return {
       totalEntries,
       oldestEntry: oldestResult?.created_at,
-      newestEntry: newestResult?.created_at
+      newestEntry: newestResult?.created_at,
+      sizeInBytes: undefined
     };
   }
 

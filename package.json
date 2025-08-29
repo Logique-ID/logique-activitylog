@@ -36,6 +36,8 @@
   "devDependencies": {
     "@types/jest": "^29.5.0",
     "@types/node": "^20.0.0",
+    "@types/pg": "^8.15.5",
+    "@types/uuid": "^10.0.0",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
     "eslint": "^8.0.0",
@@ -47,12 +49,12 @@
     "uuid": "^9.0.0"
   },
   "peerDependencies": {
+    "mongodb": "^5.0.0",
     "mysql2": "^3.0.0",
     "pg": "^8.0.0",
-    "sqlite3": "^5.0.0",
+    "redis": "^4.0.0",
     "sqlite": "^5.0.0",
-    "mongodb": "^5.0.0",
-    "redis": "^4.0.0"
+    "sqlite3": "^5.0.0"
   },
   "engines": {
     "node": ">=16.0.0"

@@ -367,7 +367,8 @@ export class SQLiteAdapter implements StorageInterface {
     return {
       totalEntries: countResult.count,
       oldestEntry: dateResult.oldest ? new Date(dateResult.oldest) : undefined,
-      newestEntry: dateResult.newest ? new Date(dateResult.newest) : undefined
+      newestEntry: dateResult.newest ? new Date(dateResult.newest) : undefined,
+      sizeInBytes: undefined
     };
   }
 

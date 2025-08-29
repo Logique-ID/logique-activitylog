@@ -394,7 +394,8 @@ export class PostgreSQLAdapter implements StorageInterface {
     return {
       totalEntries: parseInt(countResult.rows[0].count),
       oldestEntry: dateResult.rows[0].oldest ? new Date(dateResult.rows[0].oldest) : undefined,
-      newestEntry: dateResult.rows[0].newest ? new Date(dateResult.rows[0].newest) : undefined
+      newestEntry: dateResult.rows[0].newest ? new Date(dateResult.rows[0].newest) : undefined,
+      sizeInBytes: undefined
     };
   }
 

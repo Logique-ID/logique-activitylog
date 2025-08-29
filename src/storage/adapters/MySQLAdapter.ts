@@ -18,11 +18,11 @@ export class MySQLAdapter implements StorageInterface {
       const mysql = await import('mysql2/promise');
       
       this.connection = await mysql.createConnection({
-        host: this.config.connection.host,
-        port: this.config.connection.port,
-        user: this.config.connection.username,
-        password: this.config.connection.password,
-        database: this.config.connection.database,
+        host: this.config.connection.host || 'localhost',
+        port: this.config.connection.port || 3306,
+        user: this.config.connection.username || 'root',
+        password: this.config.connection.password || '',
+        database: this.config.connection.database || 'test',
         ...this.config.connection.options
       });
 
