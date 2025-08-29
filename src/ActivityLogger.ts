@@ -292,4 +292,11 @@ export class ActivityLogger {
   }> {
     return this.activityLog.getStats();
   }
+
+  /**
+   * Get query builder for complex queries
+   */
+  query() {
+    return this.activityLog.query();
+  }
 }

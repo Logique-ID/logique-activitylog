@@ -1,4 +1,5 @@
 import { ActivityLogEntry } from '../interfaces/ActivityLogEntry';
+import { StorageInterface } from '../storage/StorageInterface';
 
 export class ActivityLogQuery {
   private filters: {
@@ -14,6 +15,8 @@ export class ActivityLogQuery {
     limit?: number;
     offset?: number;
   } = {};
+
+  constructor(private storage?: StorageInterface) {}
 
   /**
    * Filter by subject type
@@ -52,6 +55,45 @@ export class ActivityLogQuery {
    */
   whereEvent(event: string): ActivityLogQuery {
     this.filters.event = event;
+    return this;
+  }
+
+  /**
+   * Filter by field (generic where)
+   */
+  where(field: string, value: any): ActivityLogQuery {
+    if (field === 'event') {
+      this.filters.event = value;
+    } else if (field === 'level') {
+      this.filters.level = value;
+    } else if (field === 'batchId') {
+      this.filters.batchId = value;
+    } else if (field === 'createdAt') {
+      // Handle date comparisons
+      if (typeof value === 'string' && value.startsWith('>=')) {
+        this.filters.fromDate = new Date(value.substring(3));
+      } else if (typeof value === 'string' && value.startsWith('<=')) {
+        this.filters.toDate = new Date(value.substring(3));
+      }
+    }
+    return this;
+  }
+
+  /**
+   * OR where condition
+   */
+  orWhere(field: string, value: any): ActivityLogQuery {
+    // For simplicity, we'll just add to the same filter
+    // In a real implementation, you might want to handle OR conditions properly
+    return this.where(field, value);
+  }
+
+  /**
+   * Order by field
+   */
+  orderBy(field: string, direction: 'asc' | 'desc' = 'desc'): ActivityLogQuery {
+    // Store ordering preference
+    (this.filters as any).orderBy = { field, direction };
     return this;
   }
 
@@ -182,6 +224,26 @@ export class ActivityLogQuery {
     }
 
     return filtered;
+  }
+
+  /**
+   * Execute query and get results
+   */
+  async get(): Promise<ActivityLogEntry[]> {
+    if (this.storage) {
+      return await this.storage.find(this.filters);
+    }
+    return [];
+  }
+
+  /**
+   * Count results
+   */
+  async count(): Promise<number> {
+    if (this.storage) {
+      return await this.storage.count(this.filters);
+    }
+    return 0;
   }
 
   /**

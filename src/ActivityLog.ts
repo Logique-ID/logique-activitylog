@@ -4,6 +4,7 @@ import { ActivityLogSubject } from './interfaces/ActivityLogSubject';
 import { ActivityLogCauser } from './interfaces/ActivityLogCauser';
 import { ActivityLogProperties } from './interfaces/ActivityLogProperties';
 import { ActivityLogEventType } from './constants/ActivityLogEventType';
+import { ActivityLogQuery } from './utils/ActivityLogQuery';
 
 import { v4 as uuidv4 } from 'uuid';
 
@@ -327,6 +328,13 @@ export class ActivityLog {
     sizeInBytes?: number;
   }> {
     return await this.config.storage.getStats();
+  }
+
+  /**
+   * Get query builder for complex queries
+   */
+  query() {
+    return new ActivityLogQuery(this.config.storage);
   }
 
   /**
