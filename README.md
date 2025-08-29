@@ -1,4 +1,4 @@
-# @logique/activity-log
+# logique-activity-log
 
 Package activity logging untuk Node. Mendukung berbagai database (RDBMS dan non-RDBMS) serta file storage.
 
@@ -17,7 +17,7 @@ Package activity logging untuk Node. Mendukung berbagai database (RDBMS dan non-
 ## Instalasi
 
 ```bash
-npm install @logique/activity-log
+npm install logique-activity-log
 ```
 
 ### Dependencies (Peer Dependencies)
@@ -46,7 +46,7 @@ npm install redis
 ### 1. Setup dengan Database Storage
 
 ```typescript
-import { ActivityLogger, DatabaseStorage } from '@logique/activity-log';
+import { ActivityLogger, DatabaseStorage } from 'logique-activity-log';
 
 // Setup dengan MySQL
 const logger = new ActivityLogger({
@@ -71,7 +71,7 @@ await logger.init();
 ### 2. Setup dengan File Storage
 
 ```typescript
-import { ActivityLogger, FileStorage } from '@logique/activity-log';
+import { ActivityLogger, FileStorage } from 'logique-activity-log';
 
 const logger = new ActivityLogger({
   storage: new FileStorage({
@@ -236,7 +236,7 @@ console.log(`Oldest entry: ${stats.oldestEntry}`);
 console.log(`Newest entry: ${stats.newestEntry}`);
 
 // Format entries
-import { ActivityLogFormatter } from '@logique/activity-log';
+import { ActivityLogFormatter } from 'logique-activity-log';
 
 const entries = await logger.find({ limit: 10 });
 const formatted = ActivityLogFormatter.formatMultiple(entries, 'html');

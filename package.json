@@ -1,5 +1,5 @@
 {
-  "name": "@logique/activity-log",
+  "name": "logique-activity-log",
   "version": "1.0.0",
   "description": "Activity logging package for Node.js",
   "main": "dist/index.js",
