@@ -1,0 +1,59 @@
+# Source files
+src/
+examples/
+
+# Development files
+.github/
+.vscode/
+.idea/
+
+# Configuration files
+.eslintrc.js
+jest.config.js
+tsconfig.json
+.gitignore
+
+# Documentation
+README.md
+CHANGELOG.md
+
+# Test files
+__tests__/
+*.test.ts
+*.spec.ts
+test/
+
+# Development dependencies
+node_modules/
+
+# Build tools
+webpack.config.js
+rollup.config.js
+babel.config.js
+
+# CI/CD
+.github/
+.gitlab-ci.yml
+.travis.yml
+.circleci/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Environment
+.env*
+!.env.example
+
+# Temporary files
+tmp/
+temp/
+*.tmp
