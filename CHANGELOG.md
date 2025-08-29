@@ -5,6 +5,40 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.2] - 2025-08-29
+
+### Added
+- CommonJS support with comprehensive examples
+- Query builder API with fluent interface
+- Enhanced file storage with proper date-based filename generation
+- Method chaining support for complex queries
+- Support for generic `where()` and `orWhere()` conditions
+- Order by functionality with ascending/descending support
+- Date range filtering capabilities
+- Property-based filtering (e.g., `properties.userAgent`)
+- Count functionality for query results
+- Improved error handling and type safety
+
+### Fixed
+- File storage filename placeholder replacement (now properly generates `activity-2025-08-29.log`)
+- TypeScript compilation errors with `exactOptionalPropertyTypes`
+- Property access issues in query filtering
+- Date handling in sorting and statistics
+- Import/export issues in CommonJS modules
+
+### Changed
+- Updated package scripts to use `npx` for better compatibility
+- Enhanced query interface with more intuitive method names
+- Improved file storage initialization with proper path handling
+- Better error messages and debugging information
+
+### Examples
+- Added `examples/commonjs-basic-usage.js` - Basic CommonJS usage with file storage
+- Added `examples/commonjs-batch-logging.js` - Batch logging example in CommonJS
+- Added `examples/commonjs-query-examples.js` - Comprehensive query examples in CommonJS
+- Added `examples/commonjs-database-example.js` - Database storage example in CommonJS
+- Updated existing TypeScript examples with improved functionality
+
 ## [Unreleased]
 
 ### Added
